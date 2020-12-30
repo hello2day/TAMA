@@ -1,5 +1,6 @@
 
 let eventDate = new Date(2021, 0,1 , 0, 0);
+
 let birthdayDate = new Date(2021, 0,1 , 0, 0);
 var fireworks = []; 
 var gravity;
@@ -10,10 +11,13 @@ var greeting;
 
 function setup() {
   createCanvas(440, 400);
-  gravity = createVector(0,0.2); //Vector that points down to give the sense of gravity.
+  gravity = createVector(0,0.2); 
+  
 	stroke(255);
 	strokeWeight(4);
 	background(0);
+
+  
 
   
 }
@@ -28,7 +32,6 @@ function draw() {
 
   let now = new Date();
  
-  
 
   let nowD = now.getDate();
   let nowM = now.getMonth() + 1;
@@ -107,9 +110,13 @@ function Particle(x, y, hu, firework) { //Defines a single Particle
 	}
 }
 
+  
+  
+  
+  
 
 
-function Firework() { 
+function Firework() { //Defines a single particle as well as the array of particles that will explode.
 	
   this.hu = random(255); //System gets a hu
 	this.firework = new Particle(random(width), height, this.hu, true); //Create firework particle
@@ -153,19 +160,13 @@ function Firework() {
 	}
 
 
-
-
 }
-  
-    
+     
 
-    // Draw the number of days, minutes, hours and seconds
-    // between now and the event to the canvas.
     textSize(20)
   let ms = eventDate - now;
 
-    // Figure out how many seconds, minutes, hours, days
-    // until the event date. 
+    
     let s = int(ms / 1000);
     ms = ms % 1000;
     let m = int(s / 60);
@@ -178,22 +179,24 @@ function Firework() {
     
     
 
-  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/6, height/2);
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",95, height/2);
   stroke(0);
   fill(random(200,255)); 
   if (nowD == bdayD && nowM == bdayM) {
      fill(0);
-  rect(65,175,300,29);
+  rect(65,175,320,30);
   fill(255);
         textSize(25)
-    text("HAPPY NEW YEAR",100, 195);
     stroke(random(0,30));
-  fill(255);
+  fill(random(200,255));
+    text("HAPPY NEW YEAR",110, 200);
+    stroke(random(0,30));
+  fill(random(200,255));
   }
     
 
   
   
   //Draw the current date to the screen.
- text(nowD + " / " + nowM + " / " + nowY, 150, height - 80);
+ text(nowD + " / " + nowM + " / " + nowY, 160, height - 80);
 }
