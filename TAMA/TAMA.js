@@ -70,7 +70,7 @@ function draw() {
     
 if (nowD == bdayD && nowM == bdayM) {
     background(0);
-   textSize(50)
+   textSize(55)
     stroke(random(0,40));
   fill(random(200,255));
     text("HAPPY NEW YEAR",width/3.4, height/2);
