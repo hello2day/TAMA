@@ -58,7 +58,7 @@ function draw() {
     
     
 
-  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/3, height/2);
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/3.2, height/2);
   stroke(0);
   fill(random(200,255)); 
   if (nowD == bdayD && nowM == bdayM) {
