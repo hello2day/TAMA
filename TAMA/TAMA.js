@@ -44,7 +44,7 @@ function draw() {
   
   
 
-    textSize(20)
+    textSize(25)
   let ms = eventDate - now;
 
     
@@ -60,7 +60,7 @@ function draw() {
     
     
 
-  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/2, height/2);
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/3, height/2);
   stroke(0);
   fill(random(200,255)); 
   if (nowD == bdayD && nowM == bdayM) {
@@ -69,10 +69,10 @@ function draw() {
     
 if (nowD == bdayD && nowM == bdayM) {
     background(0);
-   textSize(25)
+   textSize(30)
     stroke(random(0,40));
   fill(random(200,255));
-    text("HAPPY NEW YEAR",width/2, height/2);
+    text("HAPPY NEW YEAR",width/3, height/2);
     stroke(random(0,30));
   fill(random(0,40));
    
@@ -197,6 +197,6 @@ function Firework() { //Defines a single particle as well as the array of partic
  stroke(random(0,40));
   fill(255);
   
- text(nowD + " / " + nowM + " / " + nowY, width/1.7, height - 80);
+ text(nowD + " / " + nowM + " / " + nowY, width/2.4, height - 80);
   
 }
