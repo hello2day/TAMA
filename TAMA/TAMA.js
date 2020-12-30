@@ -9,7 +9,7 @@ var greeting;
 
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(420, 400);
   gravity = createVector(0,0.2); //Vector that points down to give the sense of gravity.
 	stroke(255);
 	strokeWeight(4);
