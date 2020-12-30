@@ -1,6 +1,7 @@
 
 let eventDate = new Date(2021, 0,1 , 0, 0);
 let birthdayDate = new Date(2021, 0,1 , 0, 0);
+let sldCurrentDate;
 var fireworks = []; 
 var gravity;
 var greeting;
@@ -9,12 +10,13 @@ var greeting;
 
 
 function setup() {
-  createCanvas(440, 400);
+  createCanvas(innerWidth, innerHeight);
   gravity = createVector(0,0.2); //Vector that points down to give the sense of gravity.
 	stroke(255);
 	strokeWeight(4);
 	background(0);
-
+	
+sldCurrentDate = createSlider(0, 365, 0);
 
 }
 
@@ -27,7 +29,7 @@ function draw() {
   let eventSeconds = eventDate.getSeconds();
 
   let now = new Date();
-  
+  now.setDate(now.getDate() + sldCurrentDate.value());
 
   let nowD = now.getDate();
   let nowM = now.getMonth() + 1;
@@ -58,14 +60,11 @@ function draw() {
     
     
 
-  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",95, height/2);
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/2, height/2);
   stroke(0);
   fill(random(200,255)); 
   if (nowD == bdayD && nowM == bdayM) {
-     fill(0);
-  rect(0,175,440,30);
-  fill(255);
-        
+    
   }
     
 if (nowD == bdayD && nowM == bdayM) {
@@ -73,7 +72,7 @@ if (nowD == bdayD && nowM == bdayM) {
    textSize(25)
     stroke(random(0,40));
   fill(random(200,255));
-    text("HAPPY NEW YEAR",110, 200);
+    text("HAPPY NEW YEAR",width/2, height/2);
     stroke(random(0,30));
   fill(random(0,40));
    
@@ -198,6 +197,6 @@ function Firework() { //Defines a single particle as well as the array of partic
  stroke(random(0,40));
   fill(255);
   
- text(nowD + " / " + nowM + " / " + nowY, 160, height - 80);
+ text(nowD + " / " + nowM + " / " + nowY, width/1.7, height - 80);
   
 }
