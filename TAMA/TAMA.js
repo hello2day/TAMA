@@ -1,7 +1,6 @@
 
 let eventDate = new Date(2021, 0,1 , 0, 0);
 let birthdayDate = new Date(2021, 0,1 , 0, 0);
-let sldCurrentDate;
 var fireworks = []; 
 var gravity;
 var greeting;
@@ -16,8 +15,6 @@ function setup() {
 	strokeWeight(4);
 	background(0);
 		
-sldCurrentDate = createSlider(0, 365, 0);
-
 }
 
 function draw() {
@@ -29,7 +26,7 @@ function draw() {
   let eventSeconds = eventDate.getSeconds();
 
   let now = new Date();
-	now.setDate(now.getDate() + sldCurrentDate.value());
+	
 
 
   let nowD = now.getDate();
