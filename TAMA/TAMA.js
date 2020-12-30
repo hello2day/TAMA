@@ -1,6 +1,5 @@
 
 let eventDate = new Date(2021, 0,1 , 0, 0);
-
 let birthdayDate = new Date(2021, 0,1 , 0, 0);
 var fireworks = []; 
 var gravity;
@@ -11,15 +10,12 @@ var greeting;
 
 function setup() {
   createCanvas(440, 400);
-  gravity = createVector(0,0.2); 
-  
+  gravity = createVector(0,0.2); //Vector that points down to give the sense of gravity.
 	stroke(255);
 	strokeWeight(4);
 	background(0);
 
-  
 
-  
 }
 
 function draw() {
@@ -31,7 +27,7 @@ function draw() {
   let eventSeconds = eventDate.getSeconds();
 
   let now = new Date();
- 
+  
 
   let nowD = now.getDate();
   let nowM = now.getMonth() + 1;
@@ -44,8 +40,42 @@ function draw() {
   console.log("d: ", bdayD, "m: ", bdayM, "nD: ", nowD, "nM: ", nowM);
    
   
+  
+
+    textSize(20)
+  let ms = eventDate - now;
+
+    
+    let s = int(ms / 1000);
+    ms = ms % 1000;
+    let m = int(s / 60);
+    s = s % 60;
+    let h = int(m / 60);
+    m = m % 60;
+    let d = int(h / 24);
+    h = h % 24;
+ 
+    
+    
+
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",95, height/2);
+  stroke(0);
+  fill(random(200,255)); 
   if (nowD == bdayD && nowM == bdayM) {
+     fill(0);
+  rect(0,175,440,30);
+  fill(255);
+        
+  }
+    
+if (nowD == bdayD && nowM == bdayM) {
     background(0);
+   textSize(25)
+    stroke(random(0,40));
+  fill(random(200,255));
+    text("HAPPY NEW YEAR",110, 200);
+    stroke(random(0,30));
+  fill(random(0,40));
    
    	if (random(1) < 0.1) { //Each frame there is a 10% chance of making a new Firework.
 	fireworks.push(new Firework()); //Puts new firework object in the array
@@ -162,41 +192,12 @@ function Firework() { //Defines a single particle as well as the array of partic
 
 }
      
-
-    textSize(20)
-  let ms = eventDate - now;
-
-    
-    let s = int(ms / 1000);
-    ms = ms % 1000;
-    let m = int(s / 60);
-    s = s % 60;
-    let h = int(m / 60);
-    m = m % 60;
-    let d = int(h / 24);
-    h = h % 24;
- 
-    
-    
-
-  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",95, height/2);
-  stroke(0);
-  fill(random(200,255)); 
-  if (nowD == bdayD && nowM == bdayM) {
-     fill(0);
-  rect(65,175,320,30);
-  fill(255);
-        textSize(25)
-    stroke(random(0,30));
-  fill(random(200,255));
-    text("HAPPY NEW YEAR",110, 200);
-    stroke(random(0,30));
-  fill(random(200,255));
-  }
-    
-
   
   
   //Draw the current date to the screen.
+ stroke(random(0,40));
+  fill(255);
+  
  text(nowD + " / " + nowM + " / " + nowY, 160, height - 80);
+  
 }
