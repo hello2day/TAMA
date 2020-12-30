@@ -196,7 +196,7 @@ function Firework() { //Defines a single particle as well as the array of partic
   //Draw the current date to the screen.
  stroke(random(0,40));
   fill(255);
-  
+  textSize(30);
  text(nowD + " / " + nowM + " / " + nowY, width/2.4, height - height/4);
   
 }
