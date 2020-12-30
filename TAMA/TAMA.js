@@ -1,125 +1,21 @@
-class Particle {
 
-  constructor(pos, col) {
-    this.xrange = 100;
-    this.yrange = 100;
-    this.drag = random(0.0004, 0.006);
-    this.threshold = 0.5;
-    this.acc_mult = random(1, 5);
-
-    this.init_pos = pos;
-    this.curr_pos = createVector(random(- this.xrange * width, this.xrange * width), random(- this.yrange * height, this.yrange * height));
-    this.delta_pos = createVector(this.curr_pos.x - this.init_pos.x, this.curr_pos.y - this.init_pos.y);
-
-    this.col = col;
-    
-    this.vel = p5.Vector.random2D(); //createVector(this.curr_pos.x - this.init_pos.x, this.curr_pos.y - this.init_pos.y);
-
-    this.acc = createVector(0, 0);
-  }
-
-  update() {
-    // stop if we got to a point where, ye know, we initially started at
-    if (Math.abs(this.delta_pos.x) <= this.threshold && Math.abs(this.delta_pos.y) <= this.threshold) {
-      return;
-    }
-
-    // acc will be the delta * some drag + some random stuff to make it, YES, MORE RANDOM!
-    this.acc = this.delta_pos;
-    this.acc.mult(-this.drag);
-    this.acc.add(p5.Vector.random2D().mult(this.acc_mult));
-
-    this.vel.add(this.acc);
-    this.vel.mult(0.85);
-
-    this.curr_pos.add(this.vel);
-
-    this.delta_pos = createVector(this.curr_pos.x - this.init_pos.x, this.curr_pos.y - this.init_pos.y);
-    
-    this.acc_mult *= 0.9925;
-  }
-
-  show() {
-    stroke(this.col);
-    point(this.curr_pos.x, this.curr_pos.y);
-  }
-
-}
-
-class ParticleSystem {
-
-  constructor() {
-    this.particles = [];  
-  }
-
-  addParticle(pos, col) {
-    this.particles.push(new Particle(pos, col));
-  }
-  
-  update() {
-    for (let p of this.particles) {
-      p.update();
-     }    
-  }
-  
-  render() {
-    for (let p of this.particles) {
-     p.show();
-    }
-  }
-  
-}
-
-let default_str = "Happy New Year";
-let default_col;
-
-let psystem;
-
-function getX(len, i) {
-  i = floor(i / 4);
-  return i % width;
-}
-
-function getY(len, i) {
-  i = floor(i / 4);
-  return floor(i / width);
-}
-
-function getPos(len, i) {
-  return createVector(getX(len, i), getY(len, i));
-}
-
-function init(str) {
-  psystem = new ParticleSystem();
-
-  background(0);
-
-  textAlign(CENTER, CENTER);
-  textSize(30);
-  fill(255);
-  text(str, width / 2, height / 2);
-
-  default_col = color(0);
-
-  loadPixels();
-  for (let i = 0; i < pixels.length; i += 4) {
-    let cur_pos = getPos(pixels.length, i);
-    let cur_col = get(cur_pos.x, cur_pos.y);
-    if (default_col.levels.toString() !== cur_col.toString()) {
-      psystem.addParticle(cur_pos, cur_col);
-    }
-  }
-  updatePixels();
-}
 let eventDate = new Date(2021, 0,1 , 0, 0);
-let sldCurrentDate;
 let birthdayDate = new Date(2021, 0,1 , 0, 0);
+var fireworks = []; 
+var gravity;
+var greeting;
+
+
+
 
 function setup() {
   createCanvas(400, 400);
+  gravity = createVector(0,0.2); //Vector that points down to give the sense of gravity.
+	stroke(255);
+	strokeWeight(4);
+	background(0);
 
-sldCurrentDate = createSlider(0, 365, 0);
-  init(default_str);
+  
 }
 
 function draw() {
@@ -131,7 +27,7 @@ function draw() {
   let eventSeconds = eventDate.getSeconds();
 
   let now = new Date();
-  now.setDate(now.getDate() + sldCurrentDate.value());
+ 
   
 
   let nowD = now.getDate();
@@ -143,14 +39,130 @@ function draw() {
   let bdayM = birthdayDate.getMonth() + 1;
 
   console.log("d: ", bdayD, "m: ", bdayM, "nD: ", nowD, "nM: ", nowM);
+   
   
   if (nowD == bdayD && nowM == bdayM) {
     background(0);
-    psystem.update();
-  psystem.render();
+   
+   	if (random(1) < 0.1) { //Each frame there is a 10% chance of making a new Firework.
+	fireworks.push(new Firework()); //Puts new firework object in the array
+	}
+	for (var i = 0; i < fireworks.length; i++) {
+	fireworks[i].update();
+	fireworks[i].show();
+	}
+}
+
+
+function Particle(x, y, hu, firework) { //Defines a single Particle
+
+	this.pos = createVector(x, y); //Position of the particle on the Canvas
+	this.firework = firework;
+	this.lifespan = 255;
+	this.hu = hu;
+	
+	if (this.firework) {
+	this.vel = createVector(0, random(-20, -8)); //Velocity of the particle / Sets the range for the height the particle can reach.
+	} else {
+		this.vel = p5.Vector.random2D();
+	this.vel.mult(random(2,10));
+	}
+	this.acc = createVector(0, 0); //Acceleration of the particle
+
+	this.applyForce = function(force) { //Where the accceleration is withdrawn from
+		this.acc.add(force); //Add force to the acceleration (Based on F=ma)
+	}
+
+	this.update = function() {
+		if (!this.firework) {
+		this.vel.mult(0.9);
+			this.lifespan -= 4;
+		}
+	  this.vel.add(this.acc); //Adds the acceleration to the velocity
+		this.pos.add(this.vel); //Adds the velocity to the position
+		this.acc.mult(0); //Mutiple acceleration by 0 after each frame is updated.
+	}
+	
+	//Defines if the particle is done - This allows the program to run smooothly and prevents lag
+	this.done = function() {
+		if (this.lifespan < 0) {
+			return true;
+		} else {
+			return false;
+	 }
+	}
+
+	this.show = function() {
+		colorMode(HSB);
+
+
+		if (!this.firework) {
+			strokeWeight(2);
+		stroke(hu, 255, 255, this.lifespan);
+		} else {
+			strokeWeight(4);
+			stroke (hu, 255, 255);
+	}
+		point(this.pos.x, this.pos.y);
+	}
+}
+
+
+
+function Firework() { 
+	
+  this.hu = random(255); //System gets a hu
+	this.firework = new Particle(random(width), height, this.hu, true); //Create firework particle
+	this.exploded = false;
+	this.particles = [];
+	
+	this.update = function() {
+		if (!this.exploded) {
+			this.firework.applyForce(gravity); 
+          
+			this.firework.update();
+			if (this.firework.vel.y >= 0) { 
+				this.exploded = true;
+				this.explode();
+			}
+		}
+		for (var i = this.particles.length-1; i >=0 ;i--) {
+			this.particles[i].applyForce(gravity);
+			this.particles[i].update();
+			if (this.particles[i].done()) {
+				this.particles.splice(i, 1); 
+			}
+		}
+	}
+
+	this.explode = function() {
+		for (var i = 0; i < 100; i++) {
+			var p = new Particle(this.firework.pos.x, this.firework.pos.y, this.hu, false);
+			this.particles.push(p);
+		}
+	}
+
+
+	this.show = function() {
+		if (!this.exploded) {
+			this.firework.show();
+		}
+		for (var i = 0; i < this.particles.length; i++) {
+			this.particles[i].show();
+		}
+	}
+
+
+
+
+}
   
-  } else {
-    let ms = eventDate - now;
+    
+
+    // Draw the number of days, minutes, hours and seconds
+    // between now and the event to the canvas.
+    textSize(20)
+  let ms = eventDate - now;
 
     // Figure out how many seconds, minutes, hours, days
     // until the event date. 
@@ -162,17 +174,26 @@ function draw() {
     m = m % 60;
     let d = int(h / 24);
     h = h % 24;
-
-    // Draw the number of days, minutes, hours and seconds
-    // between now and the event to the canvas.
-    textSize(20)
-   text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/2, height/2);
-    stroke(random(90,255));
-  fill(255);
+ 
     
-  
+    
+
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/6, height/2);
+  stroke(0);
+  fill(random(200,255)); 
+  if (nowD == bdayD && nowM == bdayM) {
+     fill(0);
+  rect(65,175,300,29);
+  fill(255);
+        textSize(25)
+    text("HAPPY NEW YEAR",100, 195);
+    stroke(random(0,30));
+  fill(255);
   }
+    
+
+  
   
   //Draw the current date to the screen.
-  text(nowD + " / " + nowM + " / " + nowY, width/2, height - 80);
+ text(nowD + " / " + nowM + " / " + nowY, 150, height - 80);
 }
