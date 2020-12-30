@@ -72,7 +72,7 @@ if (nowD == bdayD && nowM == bdayM) {
    textSize(50)
     stroke(random(0,40));
   fill(random(200,255));
-    text("HAPPY NEW YEAR",width/3.2, height/2);
+    text("HAPPY NEW YEAR",width/3.4, height/2);
     stroke(random(0,30));
   fill(random(0,40));
    
