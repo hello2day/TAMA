@@ -44,7 +44,7 @@ function draw() {
   
   
 
-    textSize(30)
+    textSize(40)
   let ms = eventDate - now;
 
     
@@ -60,7 +60,7 @@ function draw() {
     
     
 
-  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/3.2, height/2);
+  text(d + " hari " + h + " jam " + m + " menit " + s + " detik ",width/3, height/2);
   stroke(0);
   fill(random(200,255)); 
   if (nowD == bdayD && nowM == bdayM) {
@@ -69,10 +69,10 @@ function draw() {
     
 if (nowD == bdayD && nowM == bdayM) {
     background(0);
-   textSize(40)
+   textSize(50)
     stroke(random(0,40));
   fill(random(200,255));
-    text("HAPPY NEW YEAR",width/3.2, height/2);
+    text("HAPPY NEW YEAR",width/3, height/2);
     stroke(random(0,30));
   fill(random(0,40));
    
