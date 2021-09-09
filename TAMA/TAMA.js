@@ -1,6 +1,6 @@
 
-let eventDate = new Date(2021, 0,1 , 0, 0);
-let birthdayDate = new Date(2021, 0,1 , 0, 0);
+let eventDate = new Date(2022, 0,1 , 0, 0);
+let birthdayDate = new Date(2022, 0,1 , 0, 0);
 var fireworks = []; 
 var gravity;
 var greeting;
